@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Pappap Desktop Wallet</title>
+  <meta charset="utf-8">
+  <style>
+    body { font-family: system-ui; text-align: center; background: #000; color: #0f0; padding: 50px; }
+    button { padding: 15px; font-size: 18px; margin: 10px; }
+  </style>
+</head>
+<body>
+  <h1>PAPPAP AI CHAIN SNN</h1>
+  <h2>Desktop Wallet – Made in Vietnam</h2>
+  <div id="status">Loading...</div>
+  <button onclick="check()">Kiểm tra Node</button>
+  <button onclick="chat()">Chat với AI</button>
+
+  <script>
+    async function check() {
+      const res = await window.__TAURI__.invoke('get_node_status');
+      document.getElementById('status').innerHTML = 
+        `Neurons: ${res.neurons}<br>Power: ${res.power}<br>Status: ${res.status}`;
+    }
+    async function chat() {
+      const prompt = prompt("Hỏi Pappap:");
+      if (prompt) {
+        const res = await window.__TAURI__.invoke('send_prompt', { prompt });
+        alert(res.response);
+      }
+    }
+    check();
+  </script>
+</body>
+</html>
